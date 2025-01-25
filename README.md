@@ -30,7 +30,7 @@ withdraws will be a negative number + parent's name and password
 account total should be displayed
 
 ## Steps to implement
-[ ] create a new file for the app
+[x] create a new file for the app
 [ ] implement child accounts
 [ ] implement display of account total per child
 [ ] implement deposit+withdrawal as transaction (balance should not be allowed to go below 0)
