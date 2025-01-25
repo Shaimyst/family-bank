@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "family-bank"
 version = "0.1.0"
+package-mode = false
 description = ""
 authors = ["Jessica Sadler <jessica.sadler@scrive.com>"]
 readme = "README.md"

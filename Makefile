@@ -1,2 +1,2 @@
 up:
-	streamlit run app.py
+	poetry run streamlit run app.py
