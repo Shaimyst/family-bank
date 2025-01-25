@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "family-bank"
+version = "0.1.0"
+description = ""
+authors = ["Jessica Sadler <jessica.sadler@scrive.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+streamlit = "^1.41.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
