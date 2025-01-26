@@ -1,6 +1,8 @@
 import streamlit as st
 import json
 
+# TODO: add load of transactions from file
+
 st.title("Family Bank")
 
 class ChildAccount:
@@ -15,14 +17,15 @@ class ChildAccount:
         self.balance += amount
 
     def get_transaction_history(self):
+        # TODO: implement
         #stub
         pass
 
+# Instantiate child accounts
 willow_account = ChildAccount("Willow")
 penny_account = ChildAccount("Penny")
 
-st.write("Penny's balance: ", penny_account.get_balance())
-
+# Transaction form
 st.header("Transaction")
 child = st.selectbox("Child: ", ["Willow", "Penny"])
 transaction_amount = st.number_input("Amount: ", step=1.0)
@@ -36,22 +39,26 @@ if st.button("Commit transaction"):
     else:
         penny_account.commit_transaction(transaction_amount)
 
+    # TODO: check if parent password is correct
+
+    # TODO: update to append to existing transactions, then save to file
+    # Update save file with new transactions
+    with open("transactions.json", "w") as f:
+        # TODO: update saved data to understand accounts
+        transactions = {
+            "transactions": [
+                {
+                    "child": child,
+                    "amount": transaction_amount,
+                    "description": transaction_description,
+                    "parent": parent_name,
+                    "password": parent_password
+                }
+            ]
+        }
+        json.dump(transactions, f)
     st.write("Transaction successful")
 
 st.write("Willow's balance: ", willow_account.get_balance())
 st.write("Penny's balance: ", penny_account.get_balance())
 
-# update save file with new transactions
-with open("transactions.json", "w") as f:
-    transactions = {
-        "transactions": [
-            {
-                "child": child,
-                "amount": transaction_amount,
-                "description": transaction_description,
-                "parent": parent_name,
-                "password": parent_password
-            }
-        ]
-    }
-    json.dump(transactions, f)
