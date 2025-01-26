@@ -1,4 +1,5 @@
 import streamlit as st
+import json
 
 st.title("Family Bank")
 
@@ -39,3 +40,18 @@ if st.button("Commit transaction"):
 
 st.write("Willow's balance: ", willow_account.get_balance())
 st.write("Penny's balance: ", penny_account.get_balance())
+
+# update save file with new transactions
+with open("transactions.json", "w") as f:
+    transactions = {
+        "transactions": [
+            {
+                "child": child,
+                "amount": transaction_amount,
+                "description": transaction_description,
+                "parent": parent_name,
+                "password": parent_password
+            }
+        ]
+    }
+    json.dump(transactions, f)
