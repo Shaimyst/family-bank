@@ -5,25 +5,61 @@ import json
 
 st.title("Family Bank")
 
+class Transaction:
+    def __init__(self, child: str, amount: float, description: str, parent: str):
+        self.child: str = child
+        self.amount: float = amount
+        self.description: str = description
+        self.parent: str = parent
+
+    def to_dict(self) -> dict:
+        return {
+            "child": self.child,
+            "amount": self.amount,
+            "description": self.description,
+            "parent": self.parent
+        }
+
 class ChildAccount:
-    def __init__(self, name: str, balance: float = 0.0):
-        self.child_name = name
-        self.balance = balance
-
+    def __init__(self, child: str):
+        self.child: str = child
+        self.transaction_history: list[Transaction] = []
+        
     def get_balance(self) -> float:
-        return self.balance
+        return sum(transaction.amount for transaction in self.transaction_history)
 
-    def commit_transaction(self, amount: float):
-        self.balance += amount
+    def commit_transaction(self, transaction: Transaction):
+        self.transaction_history.append(transaction)
 
-    def get_transaction_history(self):
-        # TODO: implement
-        #stub
-        pass
 
 # Instantiate child accounts
 willow_account = ChildAccount("Willow")
 penny_account = ChildAccount("Penny")
+
+#load transactions from file
+with open("transactions.json", "r") as f:
+    transactions: list[Transaction] = []
+    try:
+        contents = json.load(f)
+        for transaction in contents["transactions"]:
+            transactions.append(
+                Transaction(
+                    transaction["child"], 
+                    transaction["amount"], 
+                    transaction["description"], 
+                    transaction["parent"]
+                )
+            )
+    except Exception as e:
+        print("No transactions found, will start with empty accounts")
+    for transaction in transactions:
+        if transaction.child == "Willow":
+            willow_account.commit_transaction(transaction)
+        elif transaction.child == "Penny":
+            penny_account.commit_transaction(transaction)
+        else:
+            st.error("Invalid child name")
+
 
 # Transaction form
 st.header("Transaction")
@@ -35,30 +71,20 @@ parent_password = st.text_input("Password: ", type="password")
 
 if st.button("Commit transaction"):
     if child == "Willow":
-        willow_account.commit_transaction(transaction_amount)
+        willow_account.commit_transaction(
+            Transaction(child, transaction_amount, transaction_description, parent_name)
+        )
     else:
-        penny_account.commit_transaction(transaction_amount)
-
-    # TODO: check if parent password is correct
-
-    # TODO: update to append to existing transactions, then save to file
-    # Update save file with new transactions
+        penny_account.commit_transaction(
+            Transaction(child, transaction_amount, transaction_description, parent_name)
+        )
     with open("transactions.json", "w") as f:
-        # TODO: update saved data to understand accounts
-        transactions = {
-            "transactions": [
-                {
-                    "child": child,
-                    "amount": transaction_amount,
-                    "description": transaction_description,
-                    "parent": parent_name,
-                    "password": parent_password
-                }
-            ]
-        }
-        json.dump(transactions, f)
-    st.write("Transaction successful")
+        all_transactions: list[Transaction] = []
+        all_transactions.extend([t.to_dict() for t in willow_account.transaction_history])
+        all_transactions.extend([t.to_dict() for t in penny_account.transaction_history])
+        json.dump({"transactions": all_transactions}, f)
+        
+    st.success("Transaction successful")
 
 st.write("Willow's balance: ", willow_account.get_balance())
 st.write("Penny's balance: ", penny_account.get_balance())
-
