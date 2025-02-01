@@ -36,5 +36,5 @@ account total should be displayed
 [X] implement deposit+withdrawal as transaction
 [X] balance should not be allowed to go below 0
 [X] implement parent authorization (parent's name and password)
-[ ] implement password check
+[X] implement password check
 [X] implement transaction history per child

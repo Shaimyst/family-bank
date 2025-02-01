@@ -1,9 +1,14 @@
 import streamlit as st
 import json
-
-# TODO: add load of transactions from file
+import hashlib
 
 st.title("Family Bank")
+
+# Constants
+PASSWORD_HASHES: dict[str, str] = {
+    "Dada": "7e0464e879d5cb4cd54715be3d7124718b615befd980aa220290ddea72788bd6",
+    "Mamma": "baa64f239eb1af2d110f6c21481a025845c810ae299d92dc9ae7dfbedda0fe8b"
+}
 
 # Application objects
 
@@ -81,14 +86,25 @@ transaction_description = st.text_input("Description: ")
 parent_name = st.selectbox("Parent: ", ["Dada", "Mamma"])
 parent_password = st.text_input("Password: ", type="password")
 
-def validate_inputs(transaction_amount: float, child: str, parent_name: str, parent_password: str) -> bool:
+def hash_password(s: str) -> str:
+    return hashlib.sha256(s.encode()).hexdigest()
+
+def validate_inputs(
+    transaction_amount: float,
+    parent_name: str,
+    parent_password: str
+) -> bool:
     if transaction_amount == 0:
+        st.error("Transaction amount cannot be 0")
+        return False
+    if hash_password(parent_password) != PASSWORD_HASHES[parent_name]:
+        st.error("Invalid password")
         return False
     return True
 
 # Commit transaction if button is clicked
 if st.button("Commit transaction"):
-    if validate_inputs(transaction_amount, child, parent_name, parent_password):
+    if validate_inputs(transaction_amount, parent_name, parent_password):
         # Try to commit transaction to child account object
         if child == "Willow":
             success: bool = willow_account.commit_transaction(
@@ -112,8 +128,6 @@ if st.button("Commit transaction"):
             all_transactions.extend([t.to_dict() for t in willow_account.transaction_history])
             all_transactions.extend([t.to_dict() for t in penny_account.transaction_history])
             json.dump({"transactions": all_transactions}, f, indent=2)
-    else:
-        st.error("Invalid inputs")
 
 # Display balances
 st.write("Willow's balance: ", willow_account.get_balance())
