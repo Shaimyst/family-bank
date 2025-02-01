@@ -38,3 +38,13 @@ account total should be displayed
 [X] implement parent authorization (parent's name and password)
 [X] implement password check
 [X] implement transaction history per child
+
+## Ideas for improvements
+[ ] Have a page for displaying transaction for a child
+[ ] Decompose logic into more functions and write unit tests
+[ ] Password should clear after each transaction is committed
+[ ] Reset button to reset the user inputs
+[ ] Make it so user is able to create more child accounts
+[ ] Make it so user is able to create more parent accounts
+[ ] Add a "delete account" option
+[ ] Add a "delete transaction" option
