@@ -2,7 +2,7 @@ import streamlit as st
 import json
 import hashlib
 
-st.title("Family Bank")
+st.title("Sadler Family Bank")
 
 # Constants
 PASSWORD_HASHES: dict[str, str] = {
