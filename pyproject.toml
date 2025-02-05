@@ -3,7 +3,7 @@ name = "family-bank"
 version = "0.1.0"
 package-mode = false
 description = ""
-authors = ["Jessica Sadler <jessica.sadler@scrive.com>"]
+authors = []
 readme = "README.md"
 
 [tool.poetry.dependencies]
