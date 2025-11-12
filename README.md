@@ -3,13 +3,13 @@ A bank application for parents and kids.
 
 ## Requirements
 - Python 3.13+
-- Poetry
+- [uv](https://docs.astral.sh/uv/)
 
 ## Setup for development
 
 Install dependencies
 ```sh
-poetry install
+uv sync
 ```
 
 ## Usage
