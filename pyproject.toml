@@ -1,7 +1,7 @@
 [project]
 name = "family-bank"
 version = "0.1.0"
-description = "Add your description here"
+description = "Family Bank App"
 readme = "README.md"
 requires-python = ">=3.13.1"
 dependencies = [
